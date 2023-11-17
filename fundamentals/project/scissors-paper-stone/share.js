@@ -1,4 +1,5 @@
 // Title: Scissors Paper Stone
+// Author: Sam Lee
 
 var computerResults = function () {
   // define a blank variable to store value
