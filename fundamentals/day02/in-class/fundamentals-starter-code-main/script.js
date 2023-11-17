@@ -47,6 +47,12 @@ var timeToTypeSonnets = function (guests) {
     3
   )} hours to make the ice!`;
 };
+
+//how many kegs of beer
+// half-barrel-size kegs = 124 pints of beer
+// customer = 2 pints per visit
+// quarter = 365/4 (days in a quarter_)
+
 // // Define functions for each container
 // function handleContainer1(inputValue) {
 //   // Your logic for the first container
