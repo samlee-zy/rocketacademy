@@ -1,9 +1,4 @@
-// Title: Juice Wedding
-/* Notes 
-- 4 oranges = 90 mL of orange juice
-- ? of oranges so all guests have 1L
-- User will enter number of guests; app will say how many oranges are needed; how many litres of orange juice you would get
-*/
+// Title: Scissors Paper Stone
 
 var computerResults = function () {
   // define a blank variable to store value
