@@ -1,5 +1,6 @@
 // Title: Scissors Paper Stone
 // Author: Sam Lee
+// Last Updated: 23/11/2023
 
 // Global State Storage
 var userName = "";
