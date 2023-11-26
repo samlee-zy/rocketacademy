@@ -2,15 +2,16 @@
 // Author: Sam Lee
 // Last Updated: 23/11/2023
 
-// Global State Storage
+//===== Global State Storage =====
 var userName = "";
 var userWins = 0;
 var computerWins = 0;
 var counter = 0;
 var gameMode = "";
 var timesPlayed = 0;
+var drawCounter = 0;
 
-// Output Computer Results
+//===== Helper Functions =====
 var computerResults = function () {
   // define a blank variable to store value
   var computerChoice = "";
@@ -60,6 +61,7 @@ var scissorsPaperStoneGame = function (input) {
         userWins++;
         output = `<b>${userName} has WON!</b><br>${userName} you inputted: ✂️<br>The computer selected: 📄 `;
       } else {
+        drawCounter++;
         output = `<b>This is a DRAW!</b> No points provided...<br>${userName} you inputted: ✂️<br>The computer selected: ✂️ `;
       }
       break;
@@ -73,6 +75,7 @@ var scissorsPaperStoneGame = function (input) {
         userWins++;
         output = `<b>${userName} has WON!</b><br>${userName} you inputted: 📄<br>The computer selected: 🗿 `;
       } else {
+        drawCounter++;
         output = `<b>This is a DRAW!</b> No points provided...<br>${userName} you inputted: 📄<br>The computer selected: 📄 `;
       }
       break;
@@ -86,11 +89,67 @@ var scissorsPaperStoneGame = function (input) {
         userWins++;
         output = `<b>${userName} has WON!</b><br>${userName} you inputted: 🗿<br>The computer selected: ✂️ `;
       } else {
+        drawCounter++;
         output = `<b>This is a DRAW!</b> No points provided...<br>${userName} you inputted: 🗿<br>The computer selected: 🗿 `;
       }
       break;
     default:
       output = `Please input either "Scissors", "Paper" or "Stone" `;
+  }
+  return output;
+};
+
+var compScissorsPaperStoneGame = function () {
+  var output = "";
+  var computerChoice1 = computerResults();
+  var computerChoice2 = computerResults();
+
+  // Create all relevant switch cases to account for all the win conditions for both players and computers
+  switch (computerChoice1) {
+    case "scissors":
+      if (computerChoice2 === "stone") {
+        timesPlayed++;
+        computerWins++;
+        output = `<b>Computer has WON!</b><br>${userName} your computer inputted: ✂️<br>The opponent computer selected: 🗿 `;
+      } else if (computerChoice2 === "paper") {
+        timesPlayed++;
+        userWins++;
+        output = `<b>${userName} has WON!</b><br>${userName} your computer inputted: ✂️<br>The opponent computer selected: 📄 `;
+      } else {
+        drawCounter++;
+        output = `<b>This is a DRAW!</b> No points provided...<br>${userName} your computer inputted: ✂️<br>The opponent computer selected: ✂️ `;
+      }
+      break;
+    case "paper":
+      if (computerChoice2 === "scissors") {
+        timesPlayed++;
+        computerWins++;
+        output = `<b>Computer has WON!</b><br>${userName} your computer inputted: 📄<br>The opponent computer selected: ✂️ `;
+      } else if (computerChoice2 === "stone") {
+        timesPlayed++;
+        userWins++;
+        output = `<b>${userName} has WON!</b><br>${userName} your computer inputted: 📄<br>The opponent computer selected: 🗿 `;
+      } else {
+        drawCounter++;
+        output = `<b>This is a DRAW!</b> No points provided...<br>${userName} your computer inputted: 📄<br>The opponent computer selected: 📄 `;
+      }
+      break;
+    case "stone":
+      if (computerChoice2 === "paper") {
+        timesPlayed++;
+        computerWins++;
+        output = `<b>Computer has WON!</b><br>${userName} your computer inputted: 🗿<br>The opponent computer selected: 📄 `;
+      } else if (computerChoice2 === "scissors") {
+        timesPlayed++;
+        userWins++;
+        output = `<b>${userName} has WON!</b><br>${userName} your computer inputted: 🗿<br>The opponent computer selected: ✂️ `;
+      } else {
+        drawCounter++;
+        output = `<b>This is a DRAW!</b> No points provided...<br>${userName} your computer inputted: 🗿<br>The opponent computer selected: 🗿 `;
+      }
+      break;
+    default:
+      output = `Please input number of rounds to play!" `;
   }
   return output;
 };
@@ -106,7 +165,7 @@ var checkUsername = function (input) {
   }
 };
 
-// Main function
+//===== Main Function =====
 var main = function (input) {
   // Ensures that inputs are converted to a string and lowercase for standardisation
   var usrInput = input.toString().toLowerCase();
@@ -128,31 +187,31 @@ var main = function (input) {
   if (counter == 1) {
     console.log(counter);
     counter++;
-    return `Hi <b>${userName}</b>!<br>Welcome to the game.<br> Please enter <b>1</b> for Scissors, Paper, Stone game.<br> Please enter <b>2</b> for the other game`;
+    return `Hi <b>${userName}</b>!<br>Welcome to the game.<br> Please enter <b>1</b> for Scissors, Paper, Stone game.<br> Please enter <b>2</b> for Computer vs Computer Scissors, Paper, Stone game!`;
   }
 
   // Second part of the journey initiates the gamemode. it'll help us determine the start of the game
   if (counter == 2) {
     console.log(counter);
+    // Input validation to check and ensure that the input is not blank
     if (usrInput == "") {
-      return `You cannot leave Input blank.<br>Please enter <b>1</b> for the Scissors, Paper, Stone game.<br>Else, Please enter <b>2</b> for the other game`;
+      return `You cannot leave Input blank.<br>Please enter <b>1</b> for the Scissors, Paper, Stone game.<br>Else, Please enter <b>2</b> for the Computer vs Computer Scissors, Paper, Stone game!`;
     }
-
-    /* MAJOR ERROR HERE - Got to figure out how to solve this error statement here - might need tutor's helps! */
-    // if (usrInput != 1 || usrInput != 2) {
-    //   return `You must enter either <b>1</b> or <b>2</b> for your game selection.<br>Please enter <b>1</b> for the Scissors, Paper, Stone game.<br>Else, Please enter <b>2</b> for the other game`;
-    // }
-
-    // If the user specified that they want game mode 1 - that's scissors, paper stone game!
+    // Using regex to ensure that either values 1 or 2 is used to determine which game mode will be played
+    if (!/^[12]$/.test(usrInput)) {
+      return `You must enter either <b>1</b> or <b>2</b> for your game selection.<br>Please enter <b>1</b> for the Scissors, Paper, Stone game.<br>Else, Please enter <b>2</b> for the other game`;
+    }
+    // Idenfities which gamemode to go into
     if (usrInput == "1") {
+      // If the user specified that they want game mode 1 - that's scissors, paper stone game!
       counter++;
       gameMode = usrInput;
       return `Welcome to the <b>Scissors, Paper, Stone</b> game!<br> Excited to have you here ${userName}!<br>Please enter "<b>Scissors</b>", "<b>Paper</b>" or "<b>Stone</b>" in the textbox above to start playing!`;
     } else if (usrInput == "2") {
       // Otherwise, it'll be the other game that hasn't been built yet
       gameMode = usrInput;
-      counter = 0;
-      return `We haven't built this yet! Sorry! We'll let you know when we have this built! Please refresh the browser to restart the app...`;
+      counter++;
+      return `Welcome to the Computer vs Computer <b>Scissors, Paper, Stone</b> game!<br> Excited to have you here ${userName}!<br>Please enter the <b>number of rounds</b> you want the computer to play against each other!`;
     }
   }
 
@@ -179,26 +238,73 @@ var main = function (input) {
     }
     // We store the results into a separate variable which will be used to surface the result later
     var scissorsPaperStoneGameResults = scissorsPaperStoneGame(usrInput);
+    // Surface some results to the screen. This includes current score
+    var currentScore = `<br>The current score is - User: ${userWins} | Computer: ${computerWins}`;
+    // Highlights the numbers of draws that happened
+    var drawScore = `<br>There were a total of ${drawCounter} Draws!`;
+    // This calculates the current win percentage the player is on
+    var currentWinPercentage =
+      `<br>${userName} your win percentage is currently: ` +
+      ((userWins / timesPlayed) * 100).toFixed(2) +
+      "%";
+
+    // Instructions provided to player to determine how they would like to proceed with next stage. I.e. Rematch or Exit
+    var rematch = `<br>If you would like a rematch, please input "Scissors", "Paper" or "Stone" into the Input textbox again!`;
+    var exitMessage = `<br>If you would like to exit, please type <b>exit</b> into the textbox!`;
+    return (
+      scissorsPaperStoneGameResults +
+      currentScore +
+      drawScore +
+      currentWinPercentage +
+      rematch +
+      exitMessage
+    );
   }
 
-  // Surface some results to the screen. This includes current score
-  var currentScore = `<br>The current score is - User: ${userWins} | Computer: ${computerWins}`;
-  // This calculates the current win percentage the player is on
-  var currentWinPercentage =
-    `<br>${userName} your win percentage is currently: ` +
-    ((userWins / timesPlayed) * 100).toFixed(2) +
-    "%";
-
-  // Instructions provided to player to determine how they would like to proceed with next stage. I.e. Rematch or Exit
-  var rematch = `<br>If you would like a rematch, please input "Scissors", "Paper" or "Stone" into the Input textbox again!`;
-  var exitMessage = `<br>If you would like to exit, please type <b>exit</b> into the textbox!`;
-
-  // Results the output
-  return (
-    scissorsPaperStoneGameResults +
-    currentScore +
-    currentWinPercentage +
-    rematch +
-    exitMessage
-  );
+  // This code goes into the 2nd game mode, where the computer will play for the user
+  if (counter > 2 && gameMode == "2") {
+    // Reset the counters everytime this gamemode is triggered
+    drawCounter = 0;
+    userWins = 0;
+    computerWins = 0;
+    // Ensures that the input is defined as a number to be used in for loop and win percentage calculation
+    var compInput = Number(input);
+    console.log(typeof compInput);
+    // Input validation to check and ensure that there is no blank values
+    if (usrInput == "") {
+      return `You cannot leave Input blank. Please enter <b>number of rounds</b> you want the computer to play against each other`;
+    }
+    // This checks through regex and ensures that there are no alphabetical characters in the input box
+    if (/[a-zA-Z]/.test(compInput)) {
+      return `This must be a number. Please enter <b>number of rounds</b> you want the computer to play against each other`;
+    }
+    // We'll account for a few unique conditions here
+    if (usrInput == "allyourbasearebelongtous") {
+      return `🎊<b>---PLAYER HAS WON BY DEFAULT---</b>🎊<br>🥳<b>---ALL HAIL THE PLAYER!---</b>🥳`;
+    }
+    // If player types 'exit', than we'll reload the browser and start the application fresh again
+    if (usrInput == "exit") {
+      location.reload(true);
+    }
+    // We run a for loop here to loop through the number of rounds inputted to get the score
+    for (var i = 0; i < compInput; i++) {
+      // We generate a separate function for this as we must expand this out further; but technically we could've referenced the first function if needed
+      compScissorsPaperStoneGame();
+    }
+    // Surface some results to the screen. This includes Final Scores
+    var finalScore = `<br>The final score is - User: ${userWins} | Computer: ${computerWins}`;
+    // This details how many draws there were
+    var drawScore = `<br>There were a total of ${drawCounter} Draws!`;
+    // This calculates the current win percentage the player is on
+    var currentWinPercentage =
+      `<br>${userName} your computer win percentage was: ` +
+      ((userWins / compInput) * 100).toFixed(2) +
+      "%";
+    // Instructions provided to player to determine how they would like to proceed with next stage. I.e. Rematch or Exit
+    var rematch = `<br>For a rematch, please input the number of rounds for the computer to play again into the Input!`;
+    var exitMessage = `<br>If you would like to exit, please type <b>exit</b> into the textbox!`;
+    return (
+      finalScore + drawScore + currentWinPercentage + rematch + exitMessage
+    );
+  }
 };
